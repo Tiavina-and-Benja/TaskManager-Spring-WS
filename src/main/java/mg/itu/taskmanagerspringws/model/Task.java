@@ -1,7 +1,10 @@
 package mg.itu.taskmanagerspringws.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mg.itu.taskmanagerspringws.enums.Priority;
 import mg.itu.taskmanagerspringws.enums.Status;
@@ -10,6 +13,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Task {
 
@@ -28,12 +33,11 @@ public class Task {
 
     private LocalDate deadline;
     private LocalDate completedAt;
-    private LocalDate startedAt;
-    private double duration;
 
     @ManyToOne
     private Project project;
 
     @OneToMany(mappedBy = "task")
+    @JsonIgnore
     private List<TaskTag> taskTags;
 }

@@ -20,6 +20,9 @@ public class Tag {
     private Long id;
 
     private String name;
+    
+    @ManyToOne
+    private User user;
 
     @OneToMany(mappedBy = "tag")
     private List<TaskTag> taskTags;

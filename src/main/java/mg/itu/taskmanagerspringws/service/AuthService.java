@@ -16,12 +16,9 @@ public class AuthService {
 
     public String login(String email, String password) {
         Optional<User> user = repo.findByEmailAndPassword(email, password);
-        if (user.isEmpty()) {
-            return null;
-        }
-        return jwtService.generateToken(
-            user.get().getEmail(),
-            user.get().getRole()
-        );
+        return user.map(value -> jwtService.generateToken(
+                value.getEmail(),
+                value.getRole().toString()
+        )).orElse(null);
     }
 }

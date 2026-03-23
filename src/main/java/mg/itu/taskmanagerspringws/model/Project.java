@@ -1,11 +1,12 @@
 package mg.itu.taskmanagerspringws.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mg.itu.taskmanagerspringws.enums.Role;
+import org.springframework.scheduling.config.Task;
 
 import java.util.List;
 
@@ -13,20 +14,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users")
-public class User {
+public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String email;
-    private String password;
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
-    @OneToMany(mappedBy = "user")
-    private List<Project> projects;
-    @OneToMany(mappedBy = "user")
-    private List<Tag> tags;
-
+    private String name;
+    private String description;
+    @ManyToOne
+    @JsonIgnore
+    private User user;
+    @OneToMany(mappedBy = "project")
+    private List<Task> tasks;
 }

@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mg.itu.taskmanagerspringws.enums.Role;
 
 import java.util.List;
 
@@ -22,8 +21,6 @@ public class User {
     private String name;
     private String email;
     private String password;
-    @Enumerated(EnumType.STRING)
-    private Role role;
 
     @OneToMany(mappedBy = "user")
     private List<Project> projects;

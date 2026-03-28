@@ -3,6 +3,7 @@ package mg.itu.taskmanagerspringws.service;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import mg.itu.taskmanagerspringws.model.User;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -16,10 +17,9 @@ public class JwtService {
         return Keys.hmacShaKeyFor(SECRET.getBytes());
     }
 
-    public String generateToken(String email, String role) {
+    public String generateToken(User user) {
         return Jwts.builder()
-                .setSubject(email)
-                .claim("role", role)
+                .setSubject(user.getEmail())
                 .setIssuedAt(new Date())
                 .setExpiration(
                         new Date(System.currentTimeMillis() + 1000 * 60 * 30))
@@ -48,12 +48,4 @@ public class JwtService {
                 .getSubject();
     }
 
-    public String extractRole(String token) {
-        return (String) Jwts.parserBuilder()
-                .setSigningKey(getKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .get("role");
-    }
 }

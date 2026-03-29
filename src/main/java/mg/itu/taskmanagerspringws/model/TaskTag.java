@@ -21,6 +21,7 @@ public class TaskTag {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     private Task task;
 
     @ManyToOne

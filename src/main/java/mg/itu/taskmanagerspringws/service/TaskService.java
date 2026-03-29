@@ -1,9 +1,6 @@
 package mg.itu.taskmanagerspringws.service;
 
-import mg.itu.taskmanagerspringws.dto.TagDto;
-import mg.itu.taskmanagerspringws.dto.TaskDto;
-import mg.itu.taskmanagerspringws.dto.TaskScoreDto;
-import mg.itu.taskmanagerspringws.dto.TaskTagDto;
+import mg.itu.taskmanagerspringws.dto.*;
 import mg.itu.taskmanagerspringws.enums.Status;
 import mg.itu.taskmanagerspringws.mapper.TaskMapper;
 import mg.itu.taskmanagerspringws.model.Tag;
@@ -24,12 +21,14 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final TaskTagService taskTagService;
+    private final TaskHistoryService taskHistoryService;
     private final TaskMapper taskMapper;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository, TaskTagService taskTagService, TaskMapper taskMapper) {
+    public TaskService(TaskRepository taskRepository, TaskTagService taskTagService, TaskHistoryService taskHistoryService, TaskMapper taskMapper) {
         this.taskRepository = taskRepository;
         this.taskTagService = taskTagService;
+        this.taskHistoryService = taskHistoryService;
         this.taskMapper = taskMapper;
     }
 
@@ -161,5 +160,9 @@ public class TaskService {
 
     public void removeTagFromTask(Long taskId, Long tagId) {
         taskTagService.removeTagFromTask(taskId, tagId);
+    }
+
+    public List<TaskHistoryResponseDto> getTaskHistoryByTaskId(Long taskId) {
+        return this.taskHistoryService.getTaskHistoryByTaskId(taskId);
     }
 }

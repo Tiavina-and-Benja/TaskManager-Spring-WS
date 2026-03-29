@@ -1,10 +1,7 @@
 package mg.itu.taskmanagerspringws.controller;
 
 import jakarta.validation.Valid;
-import mg.itu.taskmanagerspringws.dto.DashboardProjectDto;
-import mg.itu.taskmanagerspringws.dto.ProjectDto;
-import mg.itu.taskmanagerspringws.dto.TaskDto;
-import mg.itu.taskmanagerspringws.dto.TaskScoreDto;
+import mg.itu.taskmanagerspringws.dto.*;
 import mg.itu.taskmanagerspringws.service.ProjectService;
 import mg.itu.taskmanagerspringws.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,5 +85,11 @@ public class ProjectController {
     public ResponseEntity<List<TaskScoreDto>> getOrderedPrioritizedTasks(@PathVariable Long id) {
         List<TaskScoreDto> taskScore = projectService.getOrderedPrioritizedTasks(id);
         return ResponseEntity.ok(taskScore);
+    }
+
+    @GetMapping("/{id}/history")
+    public ResponseEntity<List<TaskHistoryResponseDto>> getTaskHistoryByProjectId(@PathVariable Long id) {
+        List<TaskHistoryResponseDto> taskHistories = this.projectService.getTaskHistoryByProjectId(id);
+        return ResponseEntity.ok(taskHistories);
     }
 }

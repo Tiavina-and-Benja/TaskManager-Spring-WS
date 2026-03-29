@@ -1,10 +1,7 @@
 package mg.itu.taskmanagerspringws.controller;
 
 import jakarta.validation.Valid;
-import mg.itu.taskmanagerspringws.dto.TagDto;
-import mg.itu.taskmanagerspringws.dto.TaskDto;
-import mg.itu.taskmanagerspringws.dto.TaskScoreDto;
-import mg.itu.taskmanagerspringws.dto.TaskTagDto;
+import mg.itu.taskmanagerspringws.dto.*;
 import mg.itu.taskmanagerspringws.service.TaskService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -57,4 +54,11 @@ public class TaskController {
         taskService.removeTagFromTask(id, tagId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}/history")
+    public ResponseEntity<List<TaskHistoryResponseDto>> getTaskHistoryByTaskId(@PathVariable Long id) {
+        List<TaskHistoryResponseDto> taskHistories = this.taskService.getTaskHistoryByTaskId(id);
+        return ResponseEntity.ok(taskHistories);
+    }
+
 }

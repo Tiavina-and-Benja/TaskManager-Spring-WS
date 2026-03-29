@@ -1,9 +1,6 @@
 package mg.itu.taskmanagerspringws.service;
 
-import mg.itu.taskmanagerspringws.dto.DashboardProjectDto;
-import mg.itu.taskmanagerspringws.dto.ProjectDto;
-import mg.itu.taskmanagerspringws.dto.TaskDto;
-import mg.itu.taskmanagerspringws.dto.TaskScoreDto;
+import mg.itu.taskmanagerspringws.dto.*;
 import mg.itu.taskmanagerspringws.exception.EntityNotFoundException;
 import mg.itu.taskmanagerspringws.exception.UserNotFoundException;
 import mg.itu.taskmanagerspringws.mapper.ProjectMapper;
@@ -26,14 +23,17 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
     private final TaskService taskService;
+    private final TaskHistoryService taskHistoryService;
+
 
     @Autowired
     public ProjectService(AuthService authService, ProjectRepository projectRepository,
-                          ProjectMapper projectMapper, JwtService jwtService, TaskService taskService) {
+                          ProjectMapper projectMapper, JwtService jwtService, TaskService taskService, TaskHistoryService taskHistoryService) {
         this.authService = authService;
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
         this.taskService = taskService;
+        this.taskHistoryService = taskHistoryService;
     }
 
     public ProjectDto createProject(ProjectDto dto) {
@@ -103,5 +103,9 @@ public class ProjectService {
 
     public List<TaskScoreDto> getOrderedPrioritizedTasks(Long projectId) {
         return taskService.getTasksByProjectsOrdered(List.of(projectId));
+    }
+
+    public List<TaskHistoryResponseDto> getTaskHistoryByProjectId(Long projectId) {
+        return this.taskHistoryService.getTaskHistoryByProjectId(projectId);
     }
 }

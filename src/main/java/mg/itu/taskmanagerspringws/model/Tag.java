@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mg.itu.taskmanagerspringws.enums.TagStatus;
 
 import java.util.List;
 
@@ -30,8 +29,6 @@ public class Tag {
     private User user;
 
     @OneToMany(mappedBy = "tag")
+    @JsonIgnore
     private List<TaskTag> taskTags;
-
-    @Enumerated(EnumType.STRING)
-    private TagStatus status;
 }

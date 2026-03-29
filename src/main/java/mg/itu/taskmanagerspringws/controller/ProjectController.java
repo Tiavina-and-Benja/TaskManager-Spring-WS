@@ -2,7 +2,6 @@ package mg.itu.taskmanagerspringws.controller;
 
 import jakarta.validation.Valid;
 import mg.itu.taskmanagerspringws.dto.ProjectDto;
-import mg.itu.taskmanagerspringws.model.Project;
 import mg.itu.taskmanagerspringws.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,10 @@
 package mg.itu.taskmanagerspringws.response;
 
+import lombok.Getter;
+
 import java.util.Map;
 
+@Getter
 public class ValidationErrorResponse {
     private String message;
     private Map<String, String> errors;
@@ -11,6 +14,4 @@ public class ValidationErrorResponse {
         this.errors = errors;
     }
 
-    public String getMessage() { return message; }
-    public Map<String, String> getErrors() { return errors; }
 }

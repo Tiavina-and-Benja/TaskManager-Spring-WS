@@ -1,5 +1,6 @@
 package mg.itu.taskmanagerspringws.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class TaskTag {
     private Task task;
 
     @ManyToOne
+    @JsonIgnore
     private Tag tag;
 
     private LocalDate assignedAt;

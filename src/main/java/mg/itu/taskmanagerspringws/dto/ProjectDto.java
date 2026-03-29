@@ -1,6 +1,7 @@
 package mg.itu.taskmanagerspringws.dto;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -9,7 +10,7 @@ public class ProjectDto {
     @NotEmpty
     private String title;
     private String description;
-    @NotEmpty
+    @NotNull
     private Long userId;
 
 }

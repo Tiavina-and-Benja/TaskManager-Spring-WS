@@ -6,7 +6,9 @@ import mg.itu.taskmanagerspringws.enums.Status;
 import mg.itu.taskmanagerspringws.mapper.TaskMapper;
 import mg.itu.taskmanagerspringws.model.Task;
 import mg.itu.taskmanagerspringws.repository.TaskRepository;
+import mg.itu.taskmanagerspringws.specification.TaskSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -133,6 +135,21 @@ public class TaskService {
                     dto.setPriorityScore(calculatePriorityScore(task));
                     return dto;
                 })
+                .collect(Collectors.toList());
+    }
+
+    public List<TaskDto> getTasksWithFilters(String status, String priority, String project,
+                                          LocalDate startDeadline, LocalDate endDeadline) {
+
+        Specification<Task> spec = Specification
+                .where(TaskSpecification.hasStatus(status))
+                .and(TaskSpecification.hasPriority(priority))
+                .and(TaskSpecification.hasProject(project))
+                .and(TaskSpecification.deadlineBetween(startDeadline, endDeadline));
+
+        return taskRepository.findAll(spec)
+                .stream()
+                .map(taskMapper::toDto)
                 .collect(Collectors.toList());
     }
 }

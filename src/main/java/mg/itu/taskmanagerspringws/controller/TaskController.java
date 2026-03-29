@@ -4,9 +4,11 @@ import jakarta.validation.Valid;
 import mg.itu.taskmanagerspringws.dto.TaskDto;
 import mg.itu.taskmanagerspringws.dto.TaskScoreDto;
 import mg.itu.taskmanagerspringws.service.TaskService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -19,20 +21,25 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-
-    @GetMapping
-    public ResponseEntity<List<TaskDto>> getAllTasks() {
-        return ResponseEntity.ok(taskService.getAllTasks());
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<TaskDto> getTaskById(@PathVariable Long id) {
         return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
-    @GetMapping("/project/{projectId}")
-    public ResponseEntity<List<TaskDto>> getTasksByProject(@PathVariable Long projectId) {
-        return ResponseEntity.ok(taskService.getTasksByProject(projectId));
+    @GetMapping("")
+    public ResponseEntity<List<TaskDto>> getTasksByProject(
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String priority,
+            @RequestParam(required = false) String project,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDeadline,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDeadline
+    ) {
+        System.out.println(String.format(
+                "Filters -> status: %s, priority: %s, project: %s, startDeadline: %s, endDeadline: %s",
+                status, priority, project, startDeadline, endDeadline
+        ));
+        List<TaskDto> tasks = taskService.getTasksWithFilters(status, priority, project, startDeadline, endDeadline);
+        return ResponseEntity.ok(tasks);
     }
 
     @PostMapping

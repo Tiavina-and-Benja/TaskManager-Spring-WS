@@ -7,7 +7,7 @@ import lombok.Data;
 public class ProjectDto {
     private Long id;
     @NotEmpty
-    private String name;
+    private String title;
     private String description;
     @NotEmpty
     private Long userId;

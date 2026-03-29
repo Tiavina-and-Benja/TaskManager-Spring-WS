@@ -61,7 +61,7 @@ public class ProjectService {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Project not found"));
 
-        project.setName(dto.getName());
+        project.setTitle(dto.getTitle());
         project.setDescription(dto.getDescription());
 
         Project updatedProject = projectRepository.save(project);

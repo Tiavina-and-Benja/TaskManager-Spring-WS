@@ -11,7 +11,7 @@ INSERT INTO users (id, name, email, password ) VALUES
 -- ##########################
 -- TABLE: Project
 -- ##########################
-INSERT INTO project (id, name, description, user_id) VALUES
+INSERT INTO project (id, title, description, user_id) VALUES
                                                 (1, 'Website Redesign', 'Refaire le design du site web', 1),
                                                 (2, 'Mobile App', 'Développement de l’application mobile', 1),
                                                 (3, 'Marketing Campaign', 'Campagne marketing Q2', 2);

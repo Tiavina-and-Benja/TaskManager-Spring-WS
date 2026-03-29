@@ -52,13 +52,6 @@ public class TaskTagService {
                 .collect(Collectors.toList());
     }
 
-    public List<TaskDto> getTasksByTagAndProject(Long tagId, Long projectId) {
-        return taskTagRepository.findByTagIdAndTask_ProjectId(tagId, projectId)
-                .stream()
-                .map(tt -> taskMapper.toDto(tt.getTask()))
-                .collect(Collectors.toList());
-    }
-
     public void addTagToTask(Long taskId, Long tagId) {
 
         if (taskTagRepository.existsByTaskIdAndTagId(taskId, tagId)) {
@@ -82,4 +75,6 @@ public class TaskTagService {
     public void removeTagFromTask(Long id) {
         taskTagRepository.deleteById(id);
     }
+
+    public void removeTagFromTask(Long taskId, Long tagId) { taskTagRepository.deleteByTask_IdAndTag_Id(taskId, tagId);}
 }

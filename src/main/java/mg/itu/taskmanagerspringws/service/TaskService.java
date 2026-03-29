@@ -1,9 +1,12 @@
 package mg.itu.taskmanagerspringws.service;
 
+import mg.itu.taskmanagerspringws.dto.TagDto;
 import mg.itu.taskmanagerspringws.dto.TaskDto;
 import mg.itu.taskmanagerspringws.dto.TaskScoreDto;
+import mg.itu.taskmanagerspringws.dto.TaskTagDto;
 import mg.itu.taskmanagerspringws.enums.Status;
 import mg.itu.taskmanagerspringws.mapper.TaskMapper;
+import mg.itu.taskmanagerspringws.model.Tag;
 import mg.itu.taskmanagerspringws.model.Task;
 import mg.itu.taskmanagerspringws.repository.TaskRepository;
 import mg.itu.taskmanagerspringws.specification.TaskSpecification;
@@ -20,19 +23,14 @@ import java.util.stream.Collectors;
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final TaskTagService taskTagService;
     private final TaskMapper taskMapper;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository, TaskMapper taskMapper) {
+    public TaskService(TaskRepository taskRepository, TaskTagService taskTagService, TaskMapper taskMapper) {
         this.taskRepository = taskRepository;
+        this.taskTagService = taskTagService;
         this.taskMapper = taskMapper;
-    }
-
-    public List<TaskDto> getAllTasks() {
-        return taskRepository.findAll()
-                .stream()
-                .map(taskMapper::toDto)
-                .collect(Collectors.toList());
     }
 
     public TaskDto getTaskById(Long id) {
@@ -151,5 +149,17 @@ public class TaskService {
                 .stream()
                 .map(taskMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public List<TagDto> getTaskTag(Long taskId) {
+        return taskTagService.getTagsByTask(taskId);
+    }
+
+    public void addTagToTask(Long taskId, Long tagId) {
+        taskTagService.addTagToTask(taskId, tagId);
+    }
+
+    public void removeTagFromTask(Long taskId, Long tagId) {
+        taskTagService.removeTagFromTask(taskId, tagId);
     }
 }

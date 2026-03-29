@@ -4,13 +4,16 @@ import jakarta.validation.Valid;
 import mg.itu.taskmanagerspringws.dto.DashboardProjectDto;
 import mg.itu.taskmanagerspringws.dto.ProjectDto;
 import mg.itu.taskmanagerspringws.dto.TaskDto;
+import mg.itu.taskmanagerspringws.dto.TaskScoreDto;
 import mg.itu.taskmanagerspringws.service.ProjectService;
 import mg.itu.taskmanagerspringws.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -18,12 +21,10 @@ import java.util.List;
 public class ProjectController {
 
     private final ProjectService projectService;
-    private final TaskService taskService;
 
     @Autowired
     public ProjectController(ProjectService projectService, TaskService taskService) {
         this.projectService = projectService;
-        this.taskService = taskService;
     }
 
     @GetMapping("/dashboard")
@@ -67,9 +68,25 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}/tasks")
-    public ResponseEntity<List<TaskDto>> getProjectTasks(@PathVariable Long id) {
-        List<TaskDto> tasks = taskService.getTasksByProject(id);
+    public ResponseEntity<List<TaskDto>> getProjectTasks(
+            @PathVariable Long id,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String priority,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDeadline,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDeadline) {
+        List<TaskDto> tasks = projectService.getProjectTasks(id, status, priority, startDeadline, endDeadline);
         return ResponseEntity.ok(tasks);
     }
 
+    @PostMapping("/{id}/tasks")
+    public ResponseEntity<TaskDto> addTaskToProjects(@PathVariable Long id, @Valid @RequestBody TaskDto taskDto) {
+        TaskDto task = projectService.addTasksToProject(id, taskDto);
+        return new ResponseEntity<>(task, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}/tasks/prioritized")
+    public ResponseEntity<List<TaskScoreDto>> getOrderedPrioritizedTasks(@PathVariable Long id) {
+        List<TaskScoreDto> taskScore = projectService.getOrderedPrioritizedTasks(id);
+        return ResponseEntity.ok(taskScore);
+    }
 }

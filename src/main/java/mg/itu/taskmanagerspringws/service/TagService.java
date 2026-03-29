@@ -1,38 +1,69 @@
 package mg.itu.taskmanagerspringws.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import mg.itu.taskmanagerspringws.dto.TagDto;
+import mg.itu.taskmanagerspringws.mapper.TagMapper;
 import mg.itu.taskmanagerspringws.model.Tag;
 import mg.itu.taskmanagerspringws.repository.TagRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TagService {
 
+    private final TagRepository tagRepository;
+    private final TagMapper tagMapper;
+    private final AuthService authService;
+
     @Autowired
-    private TagRepository tagRepository;
-
-    public List<Tag> getAllTags() {
-        return tagRepository.findAll();
+    public TagService(TagRepository tagRepository, TagMapper tagMapper, AuthService authService) {
+        this.tagRepository = tagRepository;
+        this.tagMapper = tagMapper;
+        this.authService = authService;
     }
 
-    public Tag getTagById(Long id) {
-        return tagRepository.findById(id)
+    public List<TagDto> getAllTags() {
+        return tagRepository.findAll()
+                .stream()
+                .map(tagMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public TagDto getTagById(Long id) {
+        Tag tag = tagRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Tag not found"));
+        return tagMapper.toDto(tag);
     }
 
-    public Tag createTag(Tag tag) {
-        return tagRepository.save(tag);
+    public TagDto createTag(TagDto dto) {
+        Tag tag = tagMapper.toEntity(dto);
+        Tag saved = tagRepository.save(tag);
+        return tagMapper.toDto(saved);
     }
 
-    public Tag updateTag(Long id, Tag newTag) {
-        Tag tag = getTagById(id);
-        tag.setName(newTag.getName());
-        return tagRepository.save(tag);
+    public TagDto updateTag(Long id, TagDto dto) {
+        Tag tag = tagRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Tag not found"));
+
+        tag.setName(dto.getName());
+        tag.setUser(tagMapper.map(dto.getUserId()));
+
+        Tag updated = tagRepository.save(tag);
+        return tagMapper.toDto(updated);
     }
 
     public void deleteTag(Long id) {
         tagRepository.deleteById(id);
+    }
+
+    public List<TagDto> getTagsByCurrentUser() {
+        Long currentUserId = authService.getCurrentUserId();
+
+        return tagRepository.findByUserId(currentUserId)
+                .stream()
+                .map(tagMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

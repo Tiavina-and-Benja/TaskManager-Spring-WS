@@ -7,4 +7,5 @@ import mg.itu.taskmanagerspringws.model.Tag;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
     List<Tag> findByNameContaining(String keyword);
+    List<Tag> findByUserId(Long userId);
 }

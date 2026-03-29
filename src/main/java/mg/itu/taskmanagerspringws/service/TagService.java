@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import mg.itu.taskmanagerspringws.model.Tag;
-import mg.itu.taskmanagerspringws.enums.TagStatus;
 import mg.itu.taskmanagerspringws.repository.TagRepository;
 
 @Service
@@ -30,15 +29,10 @@ public class TagService {
     public Tag updateTag(Long id, Tag newTag) {
         Tag tag = getTagById(id);
         tag.setName(newTag.getName());
-        tag.setStatus(newTag.getStatus());
         return tagRepository.save(tag);
     }
 
     public void deleteTag(Long id) {
         tagRepository.deleteById(id);
-    }
-
-    public List<Tag> getByStatus(TagStatus status) {
-        return tagRepository.findByStatus(status);
     }
 }

@@ -1,5 +1,6 @@
 package mg.itu.taskmanagerspringws.service;
 
+import mg.itu.taskmanagerspringws.dto.DashboardProjectDto;
 import mg.itu.taskmanagerspringws.dto.ProjectDto;
 import mg.itu.taskmanagerspringws.exception.EntityNotFoundException;
 import mg.itu.taskmanagerspringws.exception.UserNotFoundException;
@@ -20,13 +21,15 @@ public class ProjectService {
     private final AuthService authService;
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
+    private final JwtService jwtService;
 
     @Autowired
     public ProjectService(AuthService authService, ProjectRepository projectRepository,
-                          ProjectMapper projectMapper) {
+                          ProjectMapper projectMapper, JwtService jwtService) {
         this.authService = authService;
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
+        this.jwtService = jwtService;
     }
 
     public ProjectDto createProject(ProjectDto dto) {
@@ -73,5 +76,10 @@ public class ProjectService {
             throw new EntityNotFoundException("Project not found");
         }
         projectRepository.deleteById(id);
+    }
+
+    public List<DashboardProjectDto> getDashboardProjects() {
+        Long userId = authService.getCurrentUserId();
+        return projectRepository.getProjectDashboardByUserId(userId);
     }
 }

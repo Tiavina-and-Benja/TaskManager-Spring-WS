@@ -1,8 +1,11 @@
 package mg.itu.taskmanagerspringws.controller;
 
 import jakarta.validation.Valid;
+import mg.itu.taskmanagerspringws.dto.DashboardProjectDto;
 import mg.itu.taskmanagerspringws.dto.ProjectDto;
+import mg.itu.taskmanagerspringws.dto.TaskDto;
 import mg.itu.taskmanagerspringws.service.ProjectService;
+import mg.itu.taskmanagerspringws.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +18,17 @@ import java.util.List;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final TaskService taskService;
 
     @Autowired
-    public ProjectController(ProjectService projectService) {
+    public ProjectController(ProjectService projectService, TaskService taskService) {
         this.projectService = projectService;
+        this.taskService = taskService;
+    }
+
+    @GetMapping("/dashboard")
+    public ResponseEntity<List<DashboardProjectDto>> getDashboardProjects() {
+        return ResponseEntity.ok(projectService.getDashboardProjects());
     }
 
     @GetMapping("/me")
@@ -56,5 +66,10 @@ public class ProjectController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}/tasks")
+    public ResponseEntity<List<TaskDto>> getProjectTasks(@PathVariable Long id) {
+        List<TaskDto> tasks = taskService.getTasksByProject(id);
+        return ResponseEntity.ok(tasks);
+    }
 
 }

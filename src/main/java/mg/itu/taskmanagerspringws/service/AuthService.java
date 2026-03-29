@@ -3,6 +3,7 @@ package mg.itu.taskmanagerspringws.service;
 import mg.itu.taskmanagerspringws.dto.LoginDto;
 import mg.itu.taskmanagerspringws.dto.RegisterRequestDto;
 import mg.itu.taskmanagerspringws.dto.RegisterResponseDto;
+import mg.itu.taskmanagerspringws.dto.UserDto;
 import mg.itu.taskmanagerspringws.exception.EmailAlreadyUsedException;
 import mg.itu.taskmanagerspringws.exception.InvalidPasswordException;
 import mg.itu.taskmanagerspringws.exception.UserNotFoundException;
@@ -10,6 +11,7 @@ import mg.itu.taskmanagerspringws.mapper.UserMapper;
 import mg.itu.taskmanagerspringws.model.User;
 import mg.itu.taskmanagerspringws.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -48,5 +50,18 @@ public class AuthService {
         User user = userMapper.registerRequestDtoToUser(registerRequestDto);
         User savedUser = repo.save(user);
         return userMapper.userToRegisterResponseDto(savedUser);
+    }
+
+    public Long getCurrentUserId() {
+        return (Long)
+                Objects.requireNonNull(SecurityContextHolder.getContext()
+                                .getAuthentication())
+                        .getPrincipal();
+    }
+
+    public UserDto getCurrentUser() {
+        Long userId = getCurrentUserId();
+        User user = repo.getById(userId);
+        return userMapper.toDto(user);
     }
 }

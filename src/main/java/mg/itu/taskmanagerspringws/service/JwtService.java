@@ -20,6 +20,7 @@ public class JwtService {
     public String generateToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getEmail())
+                .claim("userId", user.getId())
                 .setIssuedAt(new Date())
                 .setExpiration(
                         new Date(System.currentTimeMillis() + 1000 * 60 * 30))
@@ -39,13 +40,12 @@ public class JwtService {
         }
     }
 
-    public String extractEmail(String token) {
+    public Long extractUserId(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .getSubject();
+                .get("userId", Long.class);
     }
-
 }

@@ -35,6 +35,7 @@ public class Task {
     private LocalDate completedAt;
 
     @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
     @OneToMany(mappedBy = "task")

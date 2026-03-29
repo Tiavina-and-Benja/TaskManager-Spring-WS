@@ -38,9 +38,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				return;
 			}
 			// AUTHENTIFICATION SPRING SECURITY
-			String email = jwtService.extractEmail(token);
+			Long userId = jwtService.extractUserId(token);
 			UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-					email,
+					userId,
 					null,
 					List.of(new SimpleGrantedAuthority("ROLE_USER")));
 			SecurityContextHolder.getContext().setAuthentication(auth);

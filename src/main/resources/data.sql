@@ -1,12 +1,12 @@
 -- ##########################
 -- TABLE: User
 -- ##########################
-INSERT INTO users (id, name, email, password ) VALUES
-                                                       (default, 'Alice Johnson', 'alice@mail.com', 'password'),
-                                                       (default, 'Bob Smith', 'bob@mail.com', 'password'),
-                                                       (default, 'Carol White', 'carol@mail.com', 'password'),
-                                                       (default, 'David Brown', 'david@mail.com', 'password'),
-                                                       (default, 'Eva Green', 'eva@mail.com', 'password');
+INSERT INTO users (id, name, email, password, role ) VALUES
+                                                       (default, 'Alice Johnson', 'alice@mail.com', 'password', 'ADMIN'),
+                                                       (default, 'Bob Smith', 'bob@mail.com', 'password', 'USER'),
+                                                       (default, 'Carol White', 'carol@mail.com', 'password', 'USER'),
+                                                       (default, 'David Brown', 'david@mail.com', 'password', 'USER'),
+                                                       (default, 'Eva Green', 'eva@mail.com', 'password', 'USER');
 
 -- ##########################
 -- TABLE: Project

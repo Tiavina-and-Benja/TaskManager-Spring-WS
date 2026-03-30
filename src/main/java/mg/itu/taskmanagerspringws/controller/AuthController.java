@@ -1,5 +1,7 @@
 package mg.itu.taskmanagerspringws.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import mg.itu.taskmanagerspringws.dto.LoginDto;
 import mg.itu.taskmanagerspringws.dto.RegisterRequestDto;
@@ -27,20 +29,8 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
-    @GetMapping("/me")
-    public ResponseEntity<EntityModel<UserDto>> getCurrentUser() {
-        UserDto user = authService.getCurrentUser();
 
-        EntityModel<UserDto> model = EntityModel.of(user,
-                linkTo(methodOn(AuthController.class).getCurrentUser()).withSelfRel(),
-                linkTo(methodOn(AuthController.class).login(null)).withRel("login"),
-                linkTo(methodOn(AuthController.class).register(null)).withRel("register"),
-                linkTo(methodOn(ProjectController.class).getCurrentUserProjects()).withRel("projects")
-        );
-
-        return ResponseEntity.ok(model);
-    }
-
+    @Operation(summary = "Login")
     @PostMapping("/login")
     public ResponseEntity<EntityModel<ApiResponse<?>>> login(@Valid @RequestBody LoginDto loginDto) {
         try {
@@ -49,7 +39,7 @@ public class AuthController {
             ApiResponse<?> response = new ApiResponse<>(true, "Authentification réussie", Map.of("token", token));
             EntityModel<ApiResponse<?>> model = EntityModel.of(response,
                     linkTo(methodOn(AuthController.class).login(loginDto)).withSelfRel(),
-                    linkTo(methodOn(AuthController.class).getCurrentUser()).withRel("me"),
+                    linkTo(methodOn(UserController.class).getCurrentUser()).withRel("me"),
                     linkTo(methodOn(ProjectController.class).getCurrentUserProjects()).withRel("next"),
                     linkTo(methodOn(AuthController.class).register(null)).withRel("register")
             );
@@ -67,14 +57,14 @@ public class AuthController {
         }
     }
 
+    @Operation(summary = "Register")
     @PostMapping("/register")
     public ResponseEntity<EntityModel<RegisterResponseDto>> register(@Valid @RequestBody RegisterRequestDto registerRequestDto) {
         RegisterResponseDto dto = authService.register(registerRequestDto);
 
         EntityModel<RegisterResponseDto> model = EntityModel.of(dto,
                 linkTo(methodOn(AuthController.class).register(registerRequestDto)).withSelfRel(),
-                linkTo(methodOn(AuthController.class).login(null)).withRel("login"),
-                linkTo(methodOn(AuthController.class).getCurrentUser()).withRel("me")
+                linkTo(methodOn(AuthController.class).login(null)).withRel("login")
         );
 
         return ResponseEntity.status(201).body(model);

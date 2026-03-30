@@ -1,5 +1,7 @@
 package mg.itu.taskmanagerspringws.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import mg.itu.taskmanagerspringws.dto.*;
 import mg.itu.taskmanagerspringws.service.TaskService;
@@ -26,6 +28,7 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    @Operation(summary = "Get Task By Id", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<TaskDto>> getTaskById(@PathVariable Long id) {
         TaskDto task = taskService.getTaskById(id);
@@ -41,6 +44,7 @@ public class TaskController {
         return ResponseEntity.ok(model);
     }
 
+    @Operation(summary = "Update Tasks", security = @SecurityRequirement(name = "bearerAuth"))
     @PutMapping("/{id}")
     public ResponseEntity<EntityModel<TaskDto>> updateTask(@PathVariable Long id, @Valid @RequestBody TaskDto dto) {
         TaskDto updatedTask = taskService.updateTask(id, dto);
@@ -55,6 +59,7 @@ public class TaskController {
         return ResponseEntity.ok(model);
     }
 
+    @Operation(summary = "Delete Tasks", security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/{id}")
     public ResponseEntity<EntityModel<String>> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
@@ -67,6 +72,7 @@ public class TaskController {
         return ResponseEntity.ok(model);
     }
 
+    @Operation(summary = "Get Tasks Tag", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{id}/tag")
     public ResponseEntity<CollectionModel<TagDto>> getTaskTags(@PathVariable Long id) {
         List<TagDto> tags = taskService.getTaskTag(id);
@@ -79,6 +85,7 @@ public class TaskController {
         return ResponseEntity.ok(collection);
     }
 
+    @Operation(summary = "Add Tag to Task", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/{id}/tag")
     public ResponseEntity<EntityModel<TagDto>> addTagToTask(@PathVariable Long id, @RequestBody Long tagId) {
         TagDto tag = taskService.addTagToTask(id, tagId);
@@ -92,6 +99,7 @@ public class TaskController {
         return ResponseEntity.created(linkTo(methodOn(TaskController.class).getTaskTags(id)).toUri()).body(model);
     }
 
+    @Operation(summary = "Remove Tag From Task", security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/{id}/tag")
     public ResponseEntity<EntityModel<String>> removeTagToTask(@PathVariable Long id, @RequestBody Long tagId) {
         taskService.removeTagFromTask(id, tagId);
@@ -104,6 +112,7 @@ public class TaskController {
         return ResponseEntity.ok(model);
     }
 
+    @Operation(summary = "Get Tasks history", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{id}/history")
     public ResponseEntity<CollectionModel<EntityModel<TaskHistoryResponseDto>>> getTaskHistoryByTaskId(@PathVariable Long id) {
 

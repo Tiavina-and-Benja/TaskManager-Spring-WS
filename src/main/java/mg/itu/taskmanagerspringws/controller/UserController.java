@@ -1,8 +1,11 @@
 package mg.itu.taskmanagerspringws.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import mg.itu.taskmanagerspringws.dto.ProjectDto;
 import mg.itu.taskmanagerspringws.dto.TagDto;
 import mg.itu.taskmanagerspringws.dto.UserDto;
+import mg.itu.taskmanagerspringws.service.AuthService;
 import mg.itu.taskmanagerspringws.service.UserService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -23,11 +26,29 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
+    private final AuthService authService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AuthService authService) {
         this.userService = userService;
+        this.authService = authService;
     }
 
+    @Operation(summary = "Get current user", security = @SecurityRequirement(name = "bearerAuth"))
+    @GetMapping("/me")
+    public ResponseEntity<EntityModel<UserDto>> getCurrentUser() {
+        UserDto user = authService.getCurrentUser();
+
+        EntityModel<UserDto> model = EntityModel.of(user,
+                linkTo(methodOn(UserController.class).getCurrentUser()).withSelfRel(),
+                linkTo(methodOn(AuthController.class).login(null)).withRel("login"),
+                linkTo(methodOn(AuthController.class).register(null)).withRel("register"),
+                linkTo(methodOn(ProjectController.class).getCurrentUserProjects()).withRel("projects")
+        );
+
+        return ResponseEntity.ok(model);
+    }
+
+    @Operation(summary = "Get All user", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping
     public ResponseEntity<CollectionModel<EntityModel<UserDto>>> getAllUsers() {
         List<EntityModel<UserDto>> users = userService.getAllUsers()
@@ -45,6 +66,7 @@ public class UserController {
         return ResponseEntity.ok(collection);
     }
 
+    @Operation(summary = "Get User By Id", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<UserDto>> getUserById(@PathVariable Long id) {
         UserDto user = userService.getUserById(id);
@@ -56,6 +78,7 @@ public class UserController {
         return ResponseEntity.ok(model);
     }
 
+    @Operation(summary = "Get user's projects", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{id}/projects")
     public ResponseEntity<CollectionModel<ProjectDto>> getUsersProject(@PathVariable Long id) {
         List<ProjectDto> projects = userService.getUserProjects(id);

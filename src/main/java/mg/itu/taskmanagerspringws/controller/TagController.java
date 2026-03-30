@@ -1,5 +1,7 @@
 package mg.itu.taskmanagerspringws.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import mg.itu.taskmanagerspringws.dto.TagDto;
 import mg.itu.taskmanagerspringws.service.TagService;
@@ -24,6 +26,7 @@ public class TagController {
         this.tagService = tagService;
     }
 
+    @Operation(summary = "Get Tag by Id", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<TagDto>> getTagById(@PathVariable Long id) {
         TagDto tag = tagService.getTagById(id);
@@ -34,6 +37,7 @@ public class TagController {
         return ResponseEntity.ok(model);
     }
 
+    @Operation(summary = "Get Current User's Tag", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping
     public ResponseEntity<CollectionModel<EntityModel<TagDto>>> getMyTags() {
         List<EntityModel<TagDto>> tags = tagService.getTagsByCurrentUser()
@@ -51,6 +55,7 @@ public class TagController {
         return ResponseEntity.ok(collection);
     }
 
+    @Operation(summary = "Create Tag", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping
     public ResponseEntity<EntityModel<TagDto>> createTag(@Valid @RequestBody TagDto dto) {
         TagDto created = tagService.createTag(dto);
@@ -61,6 +66,7 @@ public class TagController {
         return ResponseEntity.status(201).body(model);
     }
 
+    @Operation(summary = "Update Tag", security = @SecurityRequirement(name = "bearerAuth"))
     @PutMapping("/{id}")
     public ResponseEntity<EntityModel<TagDto>> updateTag(@PathVariable Long id, @Valid @RequestBody TagDto dto) {
         TagDto updated = tagService.updateTag(id, dto);
@@ -71,6 +77,7 @@ public class TagController {
         return ResponseEntity.ok(model);
     }
 
+    @Operation(summary = "Delete Tag", security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/{id}")
     public ResponseEntity<EntityModel<Void>> deleteTag(@PathVariable Long id) {
         tagService.deleteTag(id);

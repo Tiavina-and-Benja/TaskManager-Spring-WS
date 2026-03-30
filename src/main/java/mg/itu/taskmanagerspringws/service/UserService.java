@@ -45,4 +45,5 @@ public class UserService {
     }
 
     public List<TagDto> getCurrentUserTags() { return this.tagService.getTagsByCurrentUser(); }
+
 }

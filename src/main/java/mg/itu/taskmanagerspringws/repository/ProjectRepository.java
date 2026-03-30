@@ -24,4 +24,5 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     GROUP BY p.id, p.title
     """)
     List<DashboardProjectDto> getProjectDashboardByUserId(@Param("userId") Long userId);
+    long count();
 }

@@ -46,4 +46,5 @@ public class UserService {
 
     public List<TagDto> getCurrentUserTags() { return this.tagService.getTagsByCurrentUser(); }
 
+    public Long getTotalUsers() { return this.userRepository.count(); }
 }

@@ -1,6 +1,7 @@
 package mg.itu.taskmanagerspringws.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,4 +30,7 @@ public class TaskHistory {
     private String newValue;
 
     private LocalDate changedAt;
+
+    public TaskHistory(Task task, TaskHistoryAction taskHistoryAction, String oldValue, String newValue) {
+    }
 }

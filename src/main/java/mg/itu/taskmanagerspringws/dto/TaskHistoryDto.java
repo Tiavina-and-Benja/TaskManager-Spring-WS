@@ -18,7 +18,7 @@ public class TaskHistoryDto {
     private Long taskId;
     private String oldValue;
     private String newValue;
-    private String name;
+    private TaskHistoryAction action;
     private LocalDate changedAt;
 
 }

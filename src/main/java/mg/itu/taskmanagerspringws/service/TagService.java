@@ -3,6 +3,7 @@ package mg.itu.taskmanagerspringws.service;
 import mg.itu.taskmanagerspringws.dto.TagDto;
 import mg.itu.taskmanagerspringws.mapper.TagMapper;
 import mg.itu.taskmanagerspringws.model.Tag;
+import mg.itu.taskmanagerspringws.model.User;
 import mg.itu.taskmanagerspringws.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,9 @@ public class TagService {
 
     public TagDto createTag(TagDto dto) {
         Tag tag = tagMapper.toEntity(dto);
+        User user = new User();
+        user.setId(authService.getCurrentUserId());
+        tag.setUser(user);
         Tag saved = tagRepository.save(tag);
         return tagMapper.toDto(saved);
     }
@@ -48,7 +52,6 @@ public class TagService {
                 .orElseThrow(() -> new RuntimeException("Tag not found"));
 
         tag.setName(dto.getName());
-        tag.setUser(tagMapper.map(dto.getUserId()));
 
         Tag updated = tagRepository.save(tag);
         return tagMapper.toDto(updated);

@@ -37,7 +37,11 @@ public class ProjectService {
     }
 
     public ProjectDto createProject(ProjectDto dto) {
+        Long userId = this.authService.getCurrentUserId();
         Project project = projectMapper.toEntity(dto);
+        User user = new User();
+        user.setId(userId);
+        project.setUser(user);
         Project savedProject = projectRepository.save(project);
         return projectMapper.toDto(savedProject);
     }
@@ -107,5 +111,9 @@ public class ProjectService {
 
     public List<TaskHistoryResponseDto> getTaskHistoryByProjectId(Long projectId) {
         return this.taskHistoryService.getTaskHistoryByProjectId(projectId);
+    }
+
+    public Long getProjectCount() {
+        return this.projectRepository.count();
     }
 }

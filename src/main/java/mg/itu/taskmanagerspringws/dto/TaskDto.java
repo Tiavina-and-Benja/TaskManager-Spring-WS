@@ -19,11 +19,9 @@ public class TaskDto {
     @NotEmpty
     private String title;
     private String description;
-    @NotEmpty
     private Priority priority;
-    private Status status;
+    private Status status = Status.TODO;
     private LocalDate deadline;
     private LocalDate completedAt;
-    @NotEmpty
     private Long projectId;
 }

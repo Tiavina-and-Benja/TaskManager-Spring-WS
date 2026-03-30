@@ -15,6 +15,5 @@ public class TagDto {
     @NotEmpty
     private String name;
 
-    @NotNull
     private Long userId;
 }

@@ -4,18 +4,20 @@ import jakarta.validation.Valid;
 import mg.itu.taskmanagerspringws.dto.LoginDto;
 import mg.itu.taskmanagerspringws.dto.RegisterRequestDto;
 import mg.itu.taskmanagerspringws.dto.RegisterResponseDto;
+import mg.itu.taskmanagerspringws.dto.UserDto;
 import mg.itu.taskmanagerspringws.exception.AuthenticationRuntimeException;
 import mg.itu.taskmanagerspringws.response.ApiResponse;
 import mg.itu.taskmanagerspringws.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController
@@ -25,24 +27,57 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
+    @GetMapping("/me")
+    public ResponseEntity<EntityModel<UserDto>> getCurrentUser() {
+        UserDto user = authService.getCurrentUser();
+
+        EntityModel<UserDto> model = EntityModel.of(user,
+                linkTo(methodOn(AuthController.class).getCurrentUser()).withSelfRel(),
+                linkTo(methodOn(AuthController.class).login(null)).withRel("login"),
+                linkTo(methodOn(AuthController.class).register(null)).withRel("register"),
+                linkTo(methodOn(ProjectController.class).getCurrentUserProjects()).withRel("projects")
+        );
+
+        return ResponseEntity.ok(model);
+    }
+
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<?>> login(@Valid @RequestBody LoginDto loginDto) {
+    public ResponseEntity<EntityModel<ApiResponse<?>>> login(@Valid @RequestBody LoginDto loginDto) {
         try {
             String token = authService.login(loginDto);
-            System.out.println("Authentication en cours: " + token);
-            return ResponseEntity
-                    .ok(new ApiResponse<>(true, "Authentification réussi", Map.of("token", token)));
+
+            ApiResponse<?> response = new ApiResponse<>(true, "Authentification réussie", Map.of("token", token));
+            EntityModel<ApiResponse<?>> model = EntityModel.of(response,
+                    linkTo(methodOn(AuthController.class).login(loginDto)).withSelfRel(),
+                    linkTo(methodOn(AuthController.class).getCurrentUser()).withRel("me"),
+                    linkTo(methodOn(ProjectController.class).getCurrentUserProjects()).withRel("next"),
+                    linkTo(methodOn(AuthController.class).register(null)).withRel("register")
+            );
+
+            return ResponseEntity.ok(model);
+
         } catch (AuthenticationRuntimeException e) {
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(new ApiResponse<>(false, e.getMessage()));
+            ApiResponse<?> response = new ApiResponse<>(false, e.getMessage());
+            EntityModel<ApiResponse<?>> model = EntityModel.of(response,
+                    linkTo(methodOn(AuthController.class).login(loginDto)).withSelfRel(),
+                    linkTo(methodOn(AuthController.class).register(null)).withRel("register")
+            );
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(model);
         }
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDto> register(@Valid @RequestBody RegisterRequestDto registerRequestDto) {
+    public ResponseEntity<EntityModel<RegisterResponseDto>> register(@Valid @RequestBody RegisterRequestDto registerRequestDto) {
         RegisterResponseDto dto = authService.register(registerRequestDto);
-        return ResponseEntity.status(201).body(dto) ;
+
+        EntityModel<RegisterResponseDto> model = EntityModel.of(dto,
+                linkTo(methodOn(AuthController.class).register(registerRequestDto)).withSelfRel(),
+                linkTo(methodOn(AuthController.class).login(null)).withRel("login"),
+                linkTo(methodOn(AuthController.class).getCurrentUser()).withRel("me")
+        );
+
+        return ResponseEntity.status(201).body(model);
     }
     
 }

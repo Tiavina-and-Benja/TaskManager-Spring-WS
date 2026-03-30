@@ -30,6 +30,14 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui.html").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/health").permitAll()
+
+                        .requestMatchers("/api/users/**").hasRole("ADMIN")
+                        .requestMatchers("/api/dashboard").hasRole("ADMIN")
+
+                        .requestMatchers("/api/projects/**").hasRole("USER")
+                        .requestMatchers("/api/tasks/**").hasRole("USER")
+                        .requestMatchers("/api/tags/**").hasRole("USER")
+                        
                         .anyRequest().authenticated())
                 .addFilterBefore(
                         jwtFilter,

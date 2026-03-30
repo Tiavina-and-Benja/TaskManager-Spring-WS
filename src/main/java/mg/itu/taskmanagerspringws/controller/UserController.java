@@ -1,6 +1,7 @@
 package mg.itu.taskmanagerspringws.controller;
 
 import mg.itu.taskmanagerspringws.dto.ProjectDto;
+import mg.itu.taskmanagerspringws.dto.TagDto;
 import mg.itu.taskmanagerspringws.dto.UserDto;
 import mg.itu.taskmanagerspringws.service.UserService;
 import org.springframework.hateoas.CollectionModel;

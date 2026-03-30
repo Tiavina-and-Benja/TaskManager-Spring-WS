@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import mg.itu.taskmanagerspringws.enums.Role;
 import mg.itu.taskmanagerspringws.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,23 +27,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			HttpServletResponse response,
 			FilterChain filterChain)
 			throws ServletException, IOException {
-		System.out.println("JWT FILTER EXECUTED");
 		String header = request.getHeader("Authorization");
 		if (header != null && header.startsWith("Bearer ")) {
 			String token = header.substring(7);
-			System.out.println("Token: " + token);
 			if (!jwtService.isValid(token)) {
-				System.out.println("jwtService");
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 				response.getWriter().write("JWT invalide");
 				return;
 			}
 			// AUTHENTIFICATION SPRING SECURITY
 			Long userId = jwtService.extractUserId(token);
+			Role role = jwtService.extractRole(token);
 			UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
 					userId,
 					null,
-					List.of(new SimpleGrantedAuthority("ROLE_USER")));
+					List.of(new SimpleGrantedAuthority(role.toString())));
 			SecurityContextHolder.getContext().setAuthentication(auth);
 		}
 		filterChain.doFilter(request, response);

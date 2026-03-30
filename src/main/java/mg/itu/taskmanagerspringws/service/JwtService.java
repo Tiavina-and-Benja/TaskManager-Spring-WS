@@ -3,6 +3,7 @@ package mg.itu.taskmanagerspringws.service;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import mg.itu.taskmanagerspringws.enums.Role;
 import mg.itu.taskmanagerspringws.model.User;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ public class JwtService {
         return Jwts.builder()
                 .setSubject(user.getEmail())
                 .claim("userId", user.getId())
+                .claim("role", user.getRole())
                 .setIssuedAt(new Date())
                 .setExpiration(
                         new Date(System.currentTimeMillis() + 1000 * 60 * 30))
@@ -47,5 +49,14 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody()
                 .get("userId", Long.class);
+    }
+
+    public Role extractRole(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("role", Role.class);
     }
 }

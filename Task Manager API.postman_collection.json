@@ -25,17 +25,50 @@
               "raw": "{\n  \"email\": \"test@mail.com\",\n  \"password\": \"123456\",\n  \"name\": \"Test\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/auth/register",
+              "raw": "{{baseUrl}}/api/auth/register",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "auth",
                 "register"
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Register User",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john@mail.com\",\n  \"password\": \"123456\",\n  \"name\": \"John Doe\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/register",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            }
+          ]
         },
         {
           "name": "Login",
@@ -51,7 +84,7 @@
                   "    // Vérifier que le token existe\r",
                   "    if (jsonData.data && jsonData.data.token) {\r",
                   "        // Stocker le token dans une variable de collection\r",
-                  "        pm.environment.set(\"token\", jsonData.data.token);\r",
+                  "        pm.collectionVariables.set(\"token\", jsonData.data.token);\r",
                   "        console.log(\"Token enregistré dans la variable de collection:\", jsonData.data.token);\r",
                   "    } else {\r",
                   "        console.warn(\"Token non trouvé dans la réponse !\");\r",
@@ -79,17 +112,112 @@
               "raw": "{\n  \"email\": \"alice@mail.com\",\n  \"password\": \"password\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/auth/login",
+              "raw": "{{baseUrl}}/api/auth/login",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "auth",
                 "login"
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Login New User",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john@mail.com\",\n  \"password\": \"123456\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            },
+            {
+              "name": "Login Admin",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"admin@mail.com\",\n  \"password\": \"password\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            },
+            {
+              "name": "Login User",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"alice@mail.com\",\n  \"password\": \"password\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            }
+          ]
         }
       ]
     },
@@ -107,11 +235,12 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/users",
+              "raw": "{{baseUrl}}/api/users",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "users"
               ]
             }
@@ -129,17 +258,19 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/users/:id",
+              "raw": "{{baseUrl}}/api/users/:id",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "users",
                 ":id"
               ],
               "variable": [
                 {
-                  "key": "id"
+                  "key": "id",
+                  "value": "1"
                 }
               ]
             }
@@ -147,7 +278,7 @@
           "response": []
         },
         {
-          "name": "Get Current User Projects",
+          "name": "Get User's Projects",
           "request": {
             "auth": {
               "type": "bearer",
@@ -162,11 +293,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/users/:id/projects",
+              "raw": "{{baseUrl}}/api/users/:id/projects",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "users",
                 ":id",
                 "projects"
@@ -197,12 +329,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/auth/me",
+              "raw": "{{baseUrl}}/api/users/me",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "auth",
+                "api",
+                "users",
                 "me"
               ]
             }
@@ -214,163 +347,6 @@
     {
       "name": "Projects",
       "item": [
-        {
-          "name": "Get Project By ID",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/projects/:id",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "projects",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": "1"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update Project",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYXZpZEBtYWlsLmNvbSIsImlhdCI6MTc3NDcyODk4NiwiZXhwIjoxNzc0NzMwNzg2fQ.szF0lssgjXInojbn5YSEciseTJy5if3Qi3tmar3K1K8",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"website rededign\",\r\n    \"description\": \"rE\"\r\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/projects/:id",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "projects",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": "1"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete Project",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYXZpZEBtYWlsLmNvbSIsImlhdCI6MTc3NDcyODk4NiwiZXhwIjoxNzc0NzMwNzg2fQ.szF0lssgjXInojbn5YSEciseTJy5if3Qi3tmar3K1K8",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/projects/:id",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "projects",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": "1"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get Current Users Projects",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/projects",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "projects"
-              ]
-            }
-          },
-          "response": []
-        },
         {
           "name": "Create Project",
           "request": {
@@ -397,14 +373,305 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{ \"title\": \"\", \"description\": \"Description\" }"
+              "raw": "{ \"title\": \"Project\", \"description\": \"Description\" }"
             },
             "url": {
-              "raw": "{{baseUrl}}/projects",
+              "raw": "{{baseUrl}}/api/projects",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
+                "projects"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Create Project",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \"title\": \"Logo Remake\", \"description\": \"Creation de nouveau logo\" }"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/projects",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "projects"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": "",
+              "header": [],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Get Project By ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "projects",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Project",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"website rededign\",\r\n    \"description\": \"rE\"\r\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}//projects/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "",
+                "projects",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Update Project",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"title\": \"Remake chart\",\r\n    \"description\": \"Renouvellement de la charte graphique\"\r\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/projects/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "projects",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "_postman_previewlanguage": "",
+              "header": [],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Delete Project",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYXZpZEBtYWlsLmNvbSIsImlhdCI6MTc3NDcyODk4NiwiZXhwIjoxNzc0NzMwNzg2fQ.szF0lssgjXInojbn5YSEciseTJy5if3Qi3tmar3K1K8",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "projects",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Delete Project",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/projects/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "projects",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "3"
+                    }
+                  ]
+                }
+              },
+              "_postman_previewlanguage": "",
+              "header": [],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Get Current Users Projects",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
                 "projects"
               ]
             }
@@ -427,11 +694,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/projects/:id/tasks",
+              "raw": "{{baseUrl}}/api/projects/:id/tasks",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "projects",
                 ":id",
                 "tasks"
@@ -454,7 +722,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYXZpZEBtYWlsLmNvbSIsImlhdCI6MTc3NDcyODk4NiwiZXhwIjoxNzc0NzMwNzg2fQ.szF0lssgjXInojbn5YSEciseTJy5if3Qi3tmar3K1K8",
+                  "value": "{{token}}",
                   "type": "string"
                 }
               ]
@@ -466,12 +734,22 @@
                 "value": "Bearer {{token}}"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"Choose Color Palette\",\r\n  \"description\": \"Choisir une bonne palette de couleur\",\r\n  \"priority\": \"LOW\",\r\n  \"deadline\": \"2026-04-30\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
-              "raw": "{{baseUrl}}/projects/:id/tasks",
+              "raw": "{{baseUrl}}/api/projects/:id/tasks",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "projects",
                 ":id",
                 "tasks"
@@ -484,7 +762,51 @@
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Add Task to Project",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"id\": 0,\r\n  \"title\": \"string\",\r\n  \"description\": \"string\",\r\n  \"priority\": \"LOW\",\r\n  \"deadline\": \"2026-03-30\",\r\n  \"projectId\": 0\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/projects/:id/tasks",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "projects",
+                    ":id",
+                    "tasks"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            }
+          ]
         },
         {
           "name": "Get Prioritized Tasks",
@@ -507,11 +829,12 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/projects/:id/tasks/prioritized",
+              "raw": "{{baseUrl}}/api/projects/:id/tasks/prioritized",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "projects",
                 ":id",
                 "tasks",
@@ -543,11 +866,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/projects/dashboard",
+              "raw": "{{baseUrl}}/api/projects/dashboard",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "projects",
                 "dashboard"
               ]
@@ -571,11 +895,12 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/tasks/:id",
+              "raw": "{{baseUrl}}/api/tasks/:id",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "tasks",
                 ":id"
               ],
@@ -605,25 +930,69 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{ \"status\": \"DONE\" }"
+              "raw": "{\r\n    \"id\": 1,\r\n    \"title\": \"Design homepage\",\r\n    \"description\": \"Créer la maquette de la page d’accueil\",\r\n    \"priority\": \"HIGH\",\r\n    \"status\": \"DONE\",\r\n    \"deadline\": \"2026-03-25\",\r\n    \"completedAt\": null,\r\n    \"projectId\": 1\r\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/tasks/:id",
+              "raw": "{{baseUrl}}/api/tasks/:id",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "tasks",
                 ":id"
               ],
               "variable": [
                 {
-                  "key": "id"
+                  "key": "id",
+                  "value": "1"
                 }
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Update Task",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 1,\r\n    \"title\": \"Design homepage\",\r\n    \"description\": \"Créer la maquette de la page d’accueil\",\r\n    \"priority\": \"HIGH\",\r\n    \"status\": \"DONE\",\r\n    \"deadline\": \"2026-03-25\",\r\n    \"completedAt\": null,\r\n    \"projectId\": 1\r\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/tasks/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "tasks",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            }
+          ]
         },
         {
           "name": "Delete Task",
@@ -636,22 +1005,64 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/tasks/:id",
+              "raw": "{{baseUrl}}/api/tasks/:id",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "tasks",
                 ":id"
               ],
               "variable": [
                 {
-                  "key": "id"
+                  "key": "id",
+                  "value": "1"
                 }
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Delete Task",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/tasks/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "tasks",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "_postman_previewlanguage": "",
+              "header": [],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": ""
+            }
+          ]
         },
         {
           "name": "Get Tasks Tag",
@@ -691,6 +1102,16 @@
         {
           "name": "Add Tag to Task",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [
               {
@@ -716,11 +1137,70 @@
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Add Tag to Task",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "4",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/tasks/:id/tag",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "tasks",
+                    ":id",
+                    "tag"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            }
+          ]
         },
         {
           "name": "Remove Tag From Task",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "DELETE",
             "header": [],
             "url": {
@@ -741,7 +1221,37 @@
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Remove Tag From Task",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/tasks/:id/tag",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "tasks",
+                    ":id",
+                    "tag"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            }
+          ]
         },
         {
           "name": "Get Tasks History",
@@ -794,17 +1304,19 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/tags/:id",
+              "raw": "{{baseUrl}}/api/tags/:id",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "tags",
                 ":id"
               ],
               "variable": [
                 {
-                  "key": "id"
+                  "key": "id",
+                  "value": "1"
                 }
               ]
             }
@@ -826,55 +1338,66 @@
             },
             "method": "PUT",
             "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"School\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
-              "raw": "{{baseUrl}}/tags/:id",
+              "raw": "{{baseUrl}}/api/tags/:id",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "tags",
                 ":id"
               ],
               "variable": [
                 {
                   "key": "id",
-                  "value": ""
+                  "value": "1"
                 }
               ]
             }
           },
-          "response": []
-        },
-        {
-          "name": "Delete Tag",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/tags/:id",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "tags",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "key": "id"
+          "response": [
+            {
+              "name": "Update Tag",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/tags/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "tags",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": ""
+                    }
+                  ]
                 }
-              ]
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
             }
-          },
-          "response": []
+          ]
         },
         {
-          "name": "Get Users Tag",
+          "name": "Get Current User Tags",
           "request": {
             "method": "GET",
             "header": [
@@ -884,11 +1407,12 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/tags",
+              "raw": "{{baseUrl}}/api/tags",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "tags"
               ]
             }
@@ -898,6 +1422,16 @@
         {
           "name": "Create Tag",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [
               {
@@ -914,34 +1448,81 @@
               "raw": "{ \"name\": \"Urgent\" }"
             },
             "url": {
-              "raw": "{{baseUrl}}/tags",
+              "raw": "{{baseUrl}}/api/tags",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
+                "api",
                 "tags"
               ]
             }
           },
-          "response": []
+          "response": [
+            {
+              "name": "Create Tag",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \"name\": \"Urgent\" }"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/tags",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "tags"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            }
+          ]
         }
       ]
     },
     {
-      "name": "Health",
+      "name": "Dashboard",
       "item": [
         {
-          "name": "Check Health",
+          "name": "Get Dashboard",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/health",
+              "raw": "{{baseUrl}}/api/dashboard",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "health"
+                "api",
+                "dashboard"
               ]
             }
           },

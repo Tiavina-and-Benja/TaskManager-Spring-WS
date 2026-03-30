@@ -27,6 +27,10 @@ public class TaskHistoryService {
         return taskHistoryMapper.taskHistorytoDto(taskHistory);
     }
 
+    public List<TaskHistory> saveAll(List<TaskHistory> taskHistories) {
+        return taskHistoryRepository.saveAll(taskHistories);
+    }
+
     public List<TaskHistoryResponseDto> getTaskHistoryByTaskId(Long taskId) {
         List<TaskHistory> taskHistories = this.taskHistoryRepository.findByTaskId(taskId);
         return taskHistories

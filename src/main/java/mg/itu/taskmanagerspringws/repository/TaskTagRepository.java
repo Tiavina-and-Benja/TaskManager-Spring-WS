@@ -15,4 +15,6 @@ public interface TaskTagRepository extends JpaRepository<TaskTag, Long> {
     List<TaskTag> findByTagIdAndTask_ProjectId(Long tagId, Long projectId);
 
     boolean existsByTaskIdAndTagId(Long taskId, Long tagId);
+
+    void deleteByTask_IdAndTag_Id(Long taskId, Long tagId);
 }

@@ -37,11 +37,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			}
 			// AUTHENTIFICATION SPRING SECURITY
 			Long userId = jwtService.extractUserId(token);
-			Role role = jwtService.extractRole(token);
+			String role = jwtService.extractRole(token);
 			UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
 					userId,
 					null,
-					List.of(new SimpleGrantedAuthority(role.toString())));
+					List.of(new SimpleGrantedAuthority(role)));
 			SecurityContextHolder.getContext().setAuthentication(auth);
 		}
 		filterChain.doFilter(request, response);

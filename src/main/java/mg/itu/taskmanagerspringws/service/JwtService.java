@@ -51,12 +51,12 @@ public class JwtService {
                 .get("userId", Long.class);
     }
 
-    public Role extractRole(String token) {
+    public String extractRole(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .get("role", Role.class);
+                .get("role", String.class);
     }
 }

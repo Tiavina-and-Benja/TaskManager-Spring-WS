@@ -10,6 +10,7 @@ import mg.itu.taskmanagerspringws.model.TaskTag;
 import mg.itu.taskmanagerspringws.repository.TagRepository;
 import mg.itu.taskmanagerspringws.repository.TaskRepository;
 import mg.itu.taskmanagerspringws.repository.TaskTagRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -22,20 +23,20 @@ public class TaskTagService {
     private final TaskTagRepository taskTagRepository;
     private final TagMapper tagMapper;
     private final TaskMapper taskMapper;
-    private final TaskRepository taskRepository;
-    private final TagRepository tagRepository;
+    private final TagService tagService;
+    private final TaskService taskService;
 
 
     public TaskTagService(TaskTagRepository taskTagRepository,
-                        TagMapper tagMapper,
-                        TaskMapper taskMapper,
-                        TaskRepository taskRepository,
-                        TagRepository tagRepository) {
+                          TagMapper tagMapper,
+                          TaskMapper taskMapper,
+                          TagService tagService,
+                          @Lazy TaskService taskService) {
         this.taskTagRepository = taskTagRepository;
         this.tagMapper = tagMapper;
         this.taskMapper = taskMapper;
-        this.taskRepository = taskRepository;
-        this.tagRepository = tagRepository;
+        this.tagService = tagService;
+        this.taskService = taskService;
     }
 
     public List<TagDto> getTagsByTask(Long taskId) {
@@ -52,24 +53,23 @@ public class TaskTagService {
                 .collect(Collectors.toList());
     }
 
-    public void addTagToTask(Long taskId, Long tagId) {
+    public TagDto addTagToTask(Long taskId, Long tagId) {
 
         if (taskTagRepository.existsByTaskIdAndTagId(taskId, tagId)) {
             throw new RuntimeException("Tag already assigned to task");
         }
 
-        Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
-
-        Tag tag = tagRepository.findById(tagId)
-                .orElseThrow(() -> new RuntimeException("Tag not found"));
+        Task task = new Task();
+        task.setId(taskId);
+        TagDto tag = tagService.getTagById(tagId);
 
         TaskTag taskTag = new TaskTag();
         taskTag.setTask(task);
-        taskTag.setTag(tag);
+        taskTag.setTag(tagMapper.toEntity(tag));
         taskTag.setAssignedAt(LocalDate.now());
 
         taskTagRepository.save(taskTag);
+        return tag;
     }
 
     public void removeTagFromTask(Long id) {

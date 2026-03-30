@@ -5,6 +5,7 @@ import mg.itu.taskmanagerspringws.enums.Status;
 import mg.itu.taskmanagerspringws.mapper.TaskMapper;
 import mg.itu.taskmanagerspringws.model.Tag;
 import mg.itu.taskmanagerspringws.model.Task;
+import mg.itu.taskmanagerspringws.model.TaskTag;
 import mg.itu.taskmanagerspringws.repository.TaskRepository;
 import mg.itu.taskmanagerspringws.specification.TaskSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,8 +155,8 @@ public class TaskService {
         return taskTagService.getTagsByTask(taskId);
     }
 
-    public void addTagToTask(Long taskId, Long tagId) {
-        taskTagService.addTagToTask(taskId, tagId);
+    public TagDto addTagToTask(Long taskId, Long tagId) {
+        return taskTagService.addTagToTask(taskId, tagId);
     }
 
     public void removeTagFromTask(Long taskId, Long tagId) {

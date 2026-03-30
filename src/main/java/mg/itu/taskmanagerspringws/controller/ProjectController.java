@@ -1,5 +1,7 @@
 package mg.itu.taskmanagerspringws.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import mg.itu.taskmanagerspringws.dto.*;
 import mg.itu.taskmanagerspringws.service.ProjectService;
@@ -29,6 +31,7 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+    @Operation(summary = "Get Project Avancement", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/dashboard")
     public ResponseEntity<CollectionModel<EntityModel<DashboardProjectDto>>> getDashboardProjects() {
 
@@ -48,6 +51,7 @@ public class ProjectController {
         );
     }
 
+    @Operation(summary = "Get current user's projects", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping
     public ResponseEntity<CollectionModel<EntityModel<ProjectDto>>> getCurrentUserProjects() {
 
@@ -67,6 +71,7 @@ public class ProjectController {
         );
     }
 
+    @Operation(summary = "Create project", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping
     public ResponseEntity<EntityModel<ProjectDto>> createProject(@Valid @RequestBody ProjectDto dto) {
 
@@ -85,6 +90,7 @@ public class ProjectController {
                 .body(model);
     }
 
+    @Operation(summary = "Get Project By Id", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<ProjectDto>> getProject(@PathVariable Long id) {
 
@@ -104,6 +110,7 @@ public class ProjectController {
         return ResponseEntity.ok(model);
     }
 
+    @Operation(summary = "Update Project", security = @SecurityRequirement(name = "bearerAuth"))
     @PutMapping("/{id}")
     public ResponseEntity<EntityModel<ProjectDto>> updateProject(
             @PathVariable Long id,
@@ -124,6 +131,7 @@ public class ProjectController {
         return ResponseEntity.ok(model);
     }
 
+    @Operation(summary = "Delete Project", security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
 
@@ -135,6 +143,7 @@ public class ProjectController {
                 .build();
     }
 
+    @Operation(summary = "Get Project's Tasks", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{id}/tasks")
     public ResponseEntity<CollectionModel<EntityModel<TaskDto>>> getProjectTasks(
             @PathVariable Long id,
@@ -164,6 +173,7 @@ public class ProjectController {
         return ResponseEntity.ok(collection);
     }
 
+    @Operation(summary = "Add Tasks to Project", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/{id}/tasks")
     public ResponseEntity<EntityModel<TaskDto>> addTaskToProjects(
             @PathVariable Long id,
@@ -184,6 +194,7 @@ public class ProjectController {
                 .body(model);
     }
 
+    @Operation(summary = "Get Prioritized Task By score", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{id}/tasks/prioritized")
     public ResponseEntity<CollectionModel<EntityModel<TaskScoreDto>>> getOrderedPrioritizedTasks(@PathVariable Long id) {
 
@@ -205,6 +216,7 @@ public class ProjectController {
         return ResponseEntity.ok(collection);
     }
 
+    @Operation(summary = "Get Project History", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{id}/history")
     public ResponseEntity<CollectionModel<EntityModel<TaskHistoryResponseDto>>> getTaskHistoryByProjectId(@PathVariable Long id) {
 

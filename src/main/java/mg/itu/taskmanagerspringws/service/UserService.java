@@ -1,6 +1,7 @@
 package mg.itu.taskmanagerspringws.service;
 
 import mg.itu.taskmanagerspringws.dto.ProjectDto;
+import mg.itu.taskmanagerspringws.dto.TagDto;
 import mg.itu.taskmanagerspringws.dto.UserDto;
 import mg.itu.taskmanagerspringws.exception.EntityNotFoundException;
 import mg.itu.taskmanagerspringws.mapper.UserMapper;
@@ -17,11 +18,14 @@ public class UserService {
     private UserRepository userRepository;
     private UserMapper userMapper;
     private ProjectService projectService;
+    private TagService tagService;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, ProjectService projectService, TagService tagService) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.projectService = projectService;
+        this.tagService = tagService;
     }
 
     public List<UserDto> getAllUsers() {
@@ -39,4 +43,7 @@ public class UserService {
     public List<ProjectDto> getUserProjects(Long userId) {
         return this.projectService.getProjectsByUserId(userId);
     }
+
+    public List<TagDto> getCurrentUserTags() { return this.tagService.getTagsByCurrentUser(); }
+
 }

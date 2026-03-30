@@ -13,7 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -61,10 +63,10 @@ public class TaskController {
 
     @Operation(summary = "Delete Tasks", security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/{id}")
-    public ResponseEntity<EntityModel<String>> deleteTask(@PathVariable Long id) {
+    public ResponseEntity<EntityModel<Map>> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
 
-        EntityModel<String> model = EntityModel.of("Task deleted",
+        EntityModel<Map> model = EntityModel.of(Map.of("message", "Tak"),
                 linkTo(methodOn(TaskController.class).getTaskById(id)).withRel("self"), // optionnel, juste pour montrer
                 linkTo(methodOn(TaskController.class).getTaskHistoryByTaskId(id)).withRel("history")
         );
@@ -100,10 +102,10 @@ public class TaskController {
     }
 
     @Operation(summary = "Remove Tag From Task", security = @SecurityRequirement(name = "bearerAuth"))
-    @DeleteMapping("/{id}/tag")
-    public ResponseEntity<EntityModel<String>> removeTagToTask(@PathVariable Long id, @RequestBody Long tagId) {
+    @DeleteMapping("/{id}/tag/{tagId}")
+    public ResponseEntity<EntityModel<Map>> removeTagToTask(@PathVariable Long id, @PathVariable Long tagId) {
         taskService.removeTagFromTask(id, tagId);
-        EntityModel<String> model = EntityModel.of("Tag removed",
+        EntityModel<Map> model = EntityModel.of(Map.of("message", "Tag removed"),
                 linkTo(methodOn(TaskController.class).getTaskTags(id)).withRel("tags"),
                 linkTo(methodOn(TaskController.class).getTaskById(id)).withRel("task"),
                 linkTo(methodOn(TaskController.class).addTagToTask(id, null)).withRel("add-tag")
@@ -111,6 +113,13 @@ public class TaskController {
 
         return ResponseEntity.ok(model);
     }
+
+//    @Operation(summary = "Remove Tag From Task", security = @SecurityRequirement(name = "bearerAuth"))
+//    @DeleteMapping("/{id}/tag/{tagId}")
+//    public ResponseEntity<?> removeTagToTask(@PathVariable Long id, @PathVariable Long tagId) {
+//        taskService.removeTagFromTask(id, tagId);
+//        return ResponseEntity.noContent().build();
+//    }
 
     @Operation(summary = "Get Tasks history", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{id}/history")

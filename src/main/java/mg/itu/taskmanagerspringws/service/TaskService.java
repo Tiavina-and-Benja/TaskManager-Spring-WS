@@ -55,6 +55,7 @@ public class TaskService {
 
     public TaskDto createTask(TaskDto dto) {
         Task task = taskMapper.toEntity(dto);
+        task.setStatus(Status.TODO);
         Task saved = taskRepository.save(task);
         TaskHistoryDto taskHistory = new TaskHistoryDto();
         taskHistory.setTaskId(saved.getId());
@@ -83,6 +84,9 @@ public class TaskService {
         if (!Objects.equals(task.getStatus(), dto.getStatus())) {
             histories.add(new TaskHistory(task, TaskHistoryAction.UPDATE_STATUS, task.getStatus().toString(), dto.getStatus().toString()));
             task.setStatus(dto.getStatus());
+            if (Objects.equals(dto.getStatus(), Status.DONE)) {
+                task.setCompletedAt(LocalDate.now());
+            }
         }
         if (!Objects.equals(task.getDeadline(), dto.getDeadline())) {
             histories.add(new TaskHistory(task, TaskHistoryAction.UPDATE_DEADLINE, task.getDeadline().toString(), dto.getDeadline().toString()));
@@ -194,6 +198,7 @@ public class TaskService {
         return tag;
     }
 
+    @Transactional
     public void removeTagFromTask(Long taskId, Long tagId) {
         taskTagService.removeTagFromTask(taskId, tagId);
         TagDto tag = tagService.getTagById(tagId);

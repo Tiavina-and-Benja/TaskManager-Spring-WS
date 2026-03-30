@@ -10,7 +10,6 @@ public class ProjectDto {
     @NotEmpty
     private String title;
     private String description;
-    @NotNull
     private Long userId;
 
 }

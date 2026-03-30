@@ -77,15 +77,4 @@ public class TagController {
         return ResponseEntity.ok(model);
     }
 
-    @Operation(summary = "Delete Tag", security = @SecurityRequirement(name = "bearerAuth"))
-    @DeleteMapping("/{id}")
-    public ResponseEntity<EntityModel<Void>> deleteTag(@PathVariable Long id) {
-        tagService.deleteTag(id);
-
-        EntityModel<Void> model = EntityModel.of(null,
-                linkTo(methodOn(TagController.class).getMyTags()).withRel("my-tags")
-        );
-
-        return ResponseEntity.ok(model); // 200 OK au lieu de 204
-    }
 }

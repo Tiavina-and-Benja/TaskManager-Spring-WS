@@ -38,7 +38,7 @@ public class Task {
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<TaskTag> taskTags;
 }
